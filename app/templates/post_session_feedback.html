@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Post-Session Feedback</title>
-    <link rel="stylesheet" href="../static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
 <div class="container">
     <h1>Post-Session Feedback</h1>
-    <div class="nav"><a href="./therapy_session.html">Therapy Session</a></div>
+    <div class="nav"><a href="/therapy-session">Therapy Session</a><button id="logoutBtn" type="button">Logout</button></div>
     <div class="panel">
         <form id="feedbackForm">
             <input id="session_id" type="number" placeholder="Session ID" required />
@@ -23,8 +23,11 @@
     </div>
     <div class="panel"><pre id="result"></pre></div>
 </div>
-<script src="../static/js/app.js"></script>
+<script src="/static/js/app.js"></script>
 <script>
+requireAuth();
+bindLogout();
+
 document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const sessionId = getIntValue("session_id");

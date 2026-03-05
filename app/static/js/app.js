@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8000/api/v1";
+const API_BASE = `${window.location.origin}/api/v1`;
 
 async function apiRequest(path, method = "GET", body = null) {
     const config = { method, headers: { "Content-Type": "application/json" } };
@@ -22,4 +22,38 @@ function showJson(elementId, data) {
 function getIntValue(id) {
     const value = document.getElementById(id).value;
     return value === "" ? null : Number(value);
+}
+
+function setAuth(authPayload) {
+    localStorage.setItem("auth", JSON.stringify(authPayload));
+}
+
+function getAuth() {
+    const raw = localStorage.getItem("auth");
+    return raw ? JSON.parse(raw) : null;
+}
+
+function clearAuth() {
+    localStorage.removeItem("auth");
+}
+
+function requireAuth() {
+    if (!getAuth()) {
+        window.location.href = "/login";
+    }
+}
+
+function ensureLoggedOutUsersStayOnLogin() {
+    if (getAuth()) {
+        window.location.href = "/dashboard";
+    }
+}
+
+function bindLogout(buttonId = "logoutBtn") {
+    const btn = document.getElementById(buttonId);
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+        clearAuth();
+        window.location.href = "/login";
+    });
 }

@@ -4,16 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
 <div class="container">
     <h1>Dashboard</h1>
     <div class="nav">
-        <a href="./participants.html">Participants</a>
-        <a href="./therapy_session.html">Therapy Session</a>
-        <a href="./music_library.html">Music Library</a>
-        <a href="./progress_report.html">Progress Report</a>
+        <a href="/participants">Participants</a>
+        <a href="/therapy-session">Therapy Session</a>
+        <a href="/music-library">Music Library</a>
+        <a href="/progress-report">Progress Report</a>
+        <button id="logoutBtn" type="button">Logout</button>
     </div>
     <div class="panel">
         <p>Use this page to navigate the therapy workflow.</p>
@@ -21,8 +22,11 @@
     </div>
     <div class="panel"><pre id="result"></pre></div>
 </div>
-<script src="../static/js/app.js"></script>
+<script src="/static/js/app.js"></script>
 <script>
+requireAuth();
+bindLogout();
+
 document.getElementById("loadParticipants").addEventListener("click", async () => {
     try {
         const data = await apiRequest("/participants");

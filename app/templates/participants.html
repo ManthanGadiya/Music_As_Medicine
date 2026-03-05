@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Participants</title>
-    <link rel="stylesheet" href="../static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
 <div class="container">
     <h1>Participants</h1>
     <div class="nav">
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./participant_profile.html">Participant Profile</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/participant-profile">Participant Profile</a>
+        <button id="logoutBtn" type="button">Logout</button>
     </div>
     <div class="panel">
         <h2>Create Participant</h2>
@@ -31,8 +32,11 @@
     </div>
     <div class="panel"><pre id="result"></pre></div>
 </div>
-<script src="../static/js/app.js"></script>
+<script src="/static/js/app.js"></script>
 <script>
+requireAuth();
+bindLogout();
+
 document.getElementById("participantForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
