@@ -1,69 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Therapy Session</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Therapy Session | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Therapy Session</h1>
-    <div class="nav">
-        <a href="/pre-session-assessment">Pre-Session Assessment</a>
-        <a href="/post-session-feedback">Post-Session Feedback</a>
-        <button id="logoutBtn" type="button">Logout</button>
-    </div>
-    <div class="panel">
-        <form id="sessionForm">
-            <input id="participant_id" type="number" placeholder="Participant ID" required />
-            <input id="therapist_id" type="number" placeholder="Therapist ID" required />
-            <input id="music_id" type="number" placeholder="Music ID" required />
-            <input id="session_date" type="date" required />
-            <input id="start_time" type="time" />
-            <input id="duration_min" type="number" placeholder="Duration (min)" required />
-            <textarea id="session_notes" placeholder="Session notes"></textarea>
-            <button type="submit">Start Session</button>
-        </form>
-        <form id="sessionFetchForm">
-            <input id="session_id" type="number" placeholder="Session ID" required />
-            <button type="submit">Get Session Details</button>
-        </form>
-    </div>
-    <div class="panel"><pre id="result"></pre></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">Music Therapy System</div>
+        <nav class="menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/participants">Participants</a>
+            <a href="/music-library">Music Library</a>
+            <a class="active" href="/therapy-session">Start Session</a>
+            <a href="/progress-report">Reports</a>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="topbar">
+            <h1>Start Therapy Session</h1>
+            <button id="logoutBtn" class="btn secondary">Logout</button>
+        </div>
+        <div id="sessionMessage" class="msg"></div>
+        <section class="panel">
+            <form id="sessionForm">
+                <label>Participant</label>
+                <select id="participant_id"></select>
+                <label>Therapist ID</label>
+                <input id="therapist_id" type="number" value="1" required>
+                <label>Music Track</label>
+                <select id="music_id"></select>
+                <label>Session Date</label>
+                <input id="session_date" type="date" required>
+                <label>Duration (min)</label>
+                <input id="duration_min" type="number" required>
+                <label>Notes</label>
+                <textarea id="session_notes"></textarea>
+                <button type="submit">Start Session</button>
+            </form>
+        </section>
+        <section class="panel">
+            <div class="actions">
+                <a class="btn" href="/pre-assessment">Pre Assessment</a>
+                <a class="btn success" href="/post-feedback">Post Feedback</a>
+            </div>
+        </section>
+    </main>
 </div>
-<script src="/static/js/app.js"></script>
-<script>
+<script type="module">
+import { bindLogout, requireAuth } from "/static/js/auth.js";
+import { initSessionPage } from "/static/js/sessions.js";
 requireAuth();
 bindLogout();
-
-document.getElementById("sessionForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-        const data = await apiRequest("/sessions", "POST", {
-            participant_id: getIntValue("participant_id"),
-            therapist_id: getIntValue("therapist_id"),
-            music_id: getIntValue("music_id"),
-            session_date: document.getElementById("session_date").value,
-            start_time: document.getElementById("start_time").value || null,
-            duration_min: getIntValue("duration_min"),
-            session_notes: document.getElementById("session_notes").value || null
-        });
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
-
-document.getElementById("sessionFetchForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-        const data = await apiRequest(`/sessions/${getIntValue("session_id")}`);
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
+initSessionPage();
 </script>
 </body>
 </html>

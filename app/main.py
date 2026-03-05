@@ -47,6 +47,17 @@ def login_page() -> FileResponse:
     return FileResponse("app/templates/login.html")
 
 
+@app.get("/index", include_in_schema=False)
+@app.get("/home", include_in_schema=False)
+def index_page() -> FileResponse:
+    return FileResponse("app/templates/index.html")
+
+
+@app.get("/signup", include_in_schema=False)
+def signup_page() -> FileResponse:
+    return FileResponse("app/templates/signup.html")
+
+
 @app.get("/dashboard", include_in_schema=False)
 def dashboard_page() -> FileResponse:
     return FileResponse("app/templates/dashboard.html")
@@ -74,12 +85,22 @@ def therapy_session_page() -> FileResponse:
 
 @app.get("/pre-session-assessment", include_in_schema=False)
 def pre_assessment_page() -> FileResponse:
-    return FileResponse("app/templates/pre_session_assessment.html")
+    return FileResponse("app/templates/pre_assessment.html")
 
 
 @app.get("/post-session-feedback", include_in_schema=False)
 def post_feedback_page() -> FileResponse:
-    return FileResponse("app/templates/post_session_feedback.html")
+    return FileResponse("app/templates/post_feedback.html")
+
+
+@app.get("/pre-assessment", include_in_schema=False)
+def pre_assessment_alias_page() -> FileResponse:
+    return FileResponse("app/templates/pre_assessment.html")
+
+
+@app.get("/post-feedback", include_in_schema=False)
+def post_feedback_alias_page() -> FileResponse:
+    return FileResponse("app/templates/post_feedback.html")
 
 
 @app.get("/progress-report", include_in_schema=False)

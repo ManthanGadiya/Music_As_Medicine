@@ -1,67 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Participants</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Participants</h1>
-    <div class="nav">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/participant-profile">Participant Profile</a>
-        <button id="logoutBtn" type="button">Logout</button>
-    </div>
-    <div class="panel">
-        <h2>Create Participant</h2>
-        <form id="participantForm">
-            <input id="name" placeholder="Name" required />
-            <input id="age" type="number" placeholder="Age" required />
-            <input id="gender" placeholder="Gender" required />
-            <select id="category">
-                <option value="special_child">special_child</option>
-                <option value="neurotypical">neurotypical</option>
-            </select>
-            <input id="special_need_type" placeholder="Special need type" />
-            <textarea id="medical_history" placeholder="Medical history"></textarea>
-            <button type="submit">Create</button>
-        </form>
-        <button id="fetchAll">Get All Participants</button>
-    </div>
-    <div class="panel"><pre id="result"></pre></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">Music Therapy System</div>
+        <nav class="menu">
+            <a href="/dashboard">Dashboard</a>
+            <a class="active" href="/participants">Participants</a>
+            <a href="/music-library">Music Library</a>
+            <a href="/therapy-session">Start Session</a>
+            <a href="/progress-report">Reports</a>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="topbar">
+            <h1>Participants</h1>
+            <button id="logoutBtn" class="btn secondary">Logout</button>
+        </div>
+        <div id="participantsMessage" class="msg"></div>
+        <section class="split">
+            <article class="panel">
+                <h2>Create Participant</h2>
+                <form id="createParticipantForm">
+                    <label>Name</label><input id="name" required>
+                    <label>Age</label><input id="age" type="number" required>
+                    <label>Gender</label><input id="gender" required>
+                    <label>Category</label>
+                    <select id="category">
+                        <option value="special_child">special_child</option>
+                        <option value="neurotypical">neurotypical</option>
+                    </select>
+                    <label>Special Need Type</label><input id="special_need_type">
+                    <label>Medical History</label><textarea id="medical_history"></textarea>
+                    <button type="submit">Create</button>
+                </form>
+            </article>
+            <article class="panel">
+                <h2>Search</h2>
+                <input id="searchInput" placeholder="Search by name/category/special need">
+                <p>Click a participant row to open profile.</p>
+            </article>
+        </section>
+        <section class="panel">
+            <h2>Participant List</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Name</th><th>Age</th><th>Category</th><th>Special Need Type</th></tr></thead>
+                    <tbody id="participantsBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 </div>
-<script src="/static/js/app.js"></script>
-<script>
+<script type="module">
+import { bindLogout, requireAuth } from "/static/js/auth.js";
+import { initParticipantsPage } from "/static/js/participants.js";
 requireAuth();
 bindLogout();
-
-document.getElementById("participantForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-        const data = await apiRequest("/participants", "POST", {
-            name: document.getElementById("name").value,
-            age: getIntValue("age"),
-            gender: document.getElementById("gender").value,
-            category: document.getElementById("category").value,
-            special_need_type: document.getElementById("special_need_type").value || null,
-            medical_history: document.getElementById("medical_history").value || null
-        });
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
-
-document.getElementById("fetchAll").addEventListener("click", async () => {
-    try {
-        const data = await apiRequest("/participants");
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
+initParticipantsPage();
 </script>
 </body>
 </html>

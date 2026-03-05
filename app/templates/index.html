@@ -1,28 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Therapy System</title>
-    <link rel="stylesheet" href="static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Music Therapy System</h1>
-    <p class="muted">Landing page for therapist workflow.</p>
-    <div class="panel">
-        <div class="nav">
-            <a href="/login">Login</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/participants">Participants</a>
-            <a href="/music-library">Music Library</a>
-            <a href="/therapy-session">Therapy Session</a>
-            <a href="/pre-session-assessment">Pre-Session Assessment</a>
-            <a href="/post-session-feedback">Post-Session Feedback</a>
-            <a href="/progress-report">Progress Report</a>
+<main class="auth-shell">
+    <section class="hero-card">
+        <div class="hero-grid">
+            <div>
+                <h1>Music Therapy System</h1>
+                <p>A healthcare-focused platform to support therapists in planning sessions, tracking pre/post assessments, and reviewing participant progress.</p>
+                <p>Music therapy helps regulate mood, improve focus, and encourage social response through structured therapeutic sessions.</p>
+                <div class="actions">
+                    <a class="btn" href="/login">Login</a>
+                    <a class="btn secondary" href="/signup">Sign Up</a>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>System Workflow</h2>
+                <p>Login -> Dashboard -> Participants -> Therapy Session -> Pre Assessment -> Post Feedback -> Progress Reports</p>
+            </div>
         </div>
-        <p>System flow: Login → Dashboard → Create Participant → Start Session → Pre-Assessment → Feedback → Progress.</p>
-    </div>
-</div>
+    </section>
+</main>
 </body>
 </html>

@@ -1,44 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Login</h1>
-    <div class="nav"><a href="/login">Login</a></div>
-    <div class="panel">
+<main class="auth-shell">
+    <section class="auth-card">
+        <h1>Therapist Login</h1>
+        <p>Access your therapy dashboard.</p>
         <form id="loginForm">
             <label for="email">Email</label>
-            <input id="email" value="therapist@mail.com" required />
+            <input id="email" type="email" placeholder="therapist@mail.com" required>
             <label for="password">Password</label>
-            <input id="password" type="password" value="password123" required />
+            <input id="password" type="password" placeholder="Enter password" required>
             <button type="submit">Login</button>
         </form>
-    </div>
-    <div class="panel"><pre id="result"></pre></div>
-</div>
-<script src="/static/js/app.js"></script>
-<script>
-ensureLoggedOutUsersStayOnLogin();
-
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-        const data = await apiRequest("/auth/login", "POST", {
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
-        });
-        setAuth(data.data || data);
-        showJson("result", data);
-        window.location.href = "/dashboard";
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
+        <div id="formMessage" class="msg"></div>
+        <p>New user? <a href="/signup">Create account</a></p>
+    </section>
+</main>
+<script type="module">
+import { bindLoginForm, redirectIfAuthenticated } from "/static/js/auth.js";
+redirectIfAuthenticated();
+bindLoginForm();
 </script>
 </body>
 </html>

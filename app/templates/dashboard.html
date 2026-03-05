@@ -1,40 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Dashboard</h1>
-    <div class="nav">
-        <a href="/participants">Participants</a>
-        <a href="/therapy-session">Therapy Session</a>
-        <a href="/music-library">Music Library</a>
-        <a href="/progress-report">Progress Report</a>
-        <button id="logoutBtn" type="button">Logout</button>
-    </div>
-    <div class="panel">
-        <p>Use this page to navigate the therapy workflow.</p>
-        <button id="loadParticipants">Load Participants</button>
-    </div>
-    <div class="panel"><pre id="result"></pre></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">Music Therapy System</div>
+        <nav class="menu">
+            <a class="active" href="/dashboard">Dashboard</a>
+            <a href="/participants">Participants</a>
+            <a href="/music-library">Music Library</a>
+            <a href="/therapy-session">Start Session</a>
+            <a href="/progress-report">Reports</a>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="topbar">
+            <h1>Dashboard</h1>
+            <button id="logoutBtn" class="btn secondary">Logout</button>
+        </div>
+        <div id="dashboardMessage" class="msg"></div>
+        <section class="card-grid">
+            <article class="card">
+                <h3>Total Participants</h3>
+                <div id="totalParticipants" class="value">0</div>
+            </article>
+            <article class="card">
+                <h3>Recent Sessions</h3>
+                <div id="recentSessionCount" class="value">0</div>
+            </article>
+        </section>
+        <section class="panel">
+            <h2>Quick Actions</h2>
+            <div class="actions">
+                <a class="btn" href="/participants">Participants</a>
+                <a class="btn" href="/music-library">Music Library</a>
+                <a class="btn" href="/therapy-session">Start Therapy Session</a>
+                <a class="btn" href="/progress-report">Reports</a>
+            </div>
+        </section>
+        <section class="panel">
+            <h2>Recent Therapy Sessions</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Session ID</th><th>Participant ID</th><th>Date</th><th>Duration (min)</th></tr></thead>
+                    <tbody id="recentSessionsBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 </div>
-<script src="/static/js/app.js"></script>
-<script>
+<script type="module">
+import { bindLogout, requireAuth } from "/static/js/auth.js";
+import { initDashboard } from "/static/js/reports.js";
 requireAuth();
 bindLogout();
-
-document.getElementById("loadParticipants").addEventListener("click", async () => {
-    try {
-        const data = await apiRequest("/participants");
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
+initDashboard();
 </script>
 </body>
 </html>

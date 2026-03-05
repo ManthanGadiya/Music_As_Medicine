@@ -1,37 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Progress Report</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Report | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Progress Report</h1>
-    <div class="nav"><a href="/dashboard">Dashboard</a><button id="logoutBtn" type="button">Logout</button></div>
-    <div class="panel">
-        <form id="progressForm">
-            <input id="participant_id" type="number" placeholder="Participant ID" required />
-            <button type="submit">Get Progress</button>
-        </form>
-    </div>
-    <div class="panel"><pre id="result"></pre></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">Music Therapy System</div>
+        <nav class="menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/participants">Participants</a>
+            <a href="/music-library">Music Library</a>
+            <a href="/therapy-session">Start Session</a>
+            <a class="active" href="/progress-report">Reports</a>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="topbar">
+            <h1>Progress Report</h1>
+            <button id="logoutBtn" class="btn secondary">Logout</button>
+        </div>
+        <div id="reportMessage" class="msg"></div>
+        <section class="panel">
+            <form id="progressForm" class="actions">
+                <select id="participant_id"></select>
+                <button type="submit">Load Report</button>
+            </form>
+        </section>
+        <section class="card-grid">
+            <article class="card"><h3>Session Count</h3><div id="sessionCount" class="value">0</div></article>
+            <article class="card"><h3>Avg Mood Improvement</h3><div id="avgMoodImprovement" class="value">0.00</div></article>
+            <article class="card"><h3>Feedback Summary</h3><div id="feedbackSummary">No data</div></article>
+        </section>
+        <section class="panel chart-wrap">
+            <h2>Mood Trend (Pre vs Post)</h2>
+            <canvas id="moodChart"></canvas>
+        </section>
+        <section class="panel">
+            <h2>Session Comparison</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Session ID</th><th>Date</th><th>Pre Mood</th><th>Post Mood</th><th>Behavior Change</th></tr></thead>
+                    <tbody id="progressBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 </div>
-<script src="/static/js/app.js"></script>
-<script>
+<script type="module">
+import { bindLogout, requireAuth } from "/static/js/auth.js";
+import { initProgressReport } from "/static/js/reports.js";
 requireAuth();
 bindLogout();
-
-document.getElementById("progressForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-        const data = await apiRequest(`/participants/${getIntValue("participant_id")}/progress`);
-        showJson("result", data);
-    } catch (err) {
-        showJson("result", { error: err.message });
-    }
-});
+initProgressReport();
 </script>
 </body>
 </html>
