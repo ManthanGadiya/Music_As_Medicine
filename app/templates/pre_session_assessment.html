@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pre-Session Assessment</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Pre-Session Assessment</h1>
+    <div class="nav"><a href="./therapy_session.html">Therapy Session</a></div>
+    <div class="panel">
+        <form id="preForm">
+            <input id="session_id" type="number" placeholder="Session ID" required />
+            <input id="mood_level" type="number" min="1" max="10" placeholder="Mood level" required />
+            <input id="stress_level" type="number" min="1" max="10" placeholder="Stress level" required />
+            <input id="attention_level" type="number" min="1" max="10" placeholder="Attention level" required />
+            <textarea id="notes" placeholder="Notes"></textarea>
+            <button type="submit">Submit Pre-Assessment</button>
+        </form>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("preForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const sessionId = getIntValue("session_id");
+    try {
+        const data = await apiRequest(`/sessions/${sessionId}/pre-assessment`, "POST", {
+            mood_level: getIntValue("mood_level"),
+            stress_level: getIntValue("stress_level"),
+            attention_level: getIntValue("attention_level"),
+            notes: document.getElementById("notes").value || null
+        });
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>

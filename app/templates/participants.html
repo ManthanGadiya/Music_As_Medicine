@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Participants</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Participants</h1>
+    <div class="nav">
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./participant_profile.html">Participant Profile</a>
+    </div>
+    <div class="panel">
+        <h2>Create Participant</h2>
+        <form id="participantForm">
+            <input id="name" placeholder="Name" required />
+            <input id="age" type="number" placeholder="Age" required />
+            <input id="gender" placeholder="Gender" required />
+            <select id="category">
+                <option value="special_child">special_child</option>
+                <option value="neurotypical">neurotypical</option>
+            </select>
+            <input id="special_need_type" placeholder="Special need type" />
+            <textarea id="medical_history" placeholder="Medical history"></textarea>
+            <button type="submit">Create</button>
+        </form>
+        <button id="fetchAll">Get All Participants</button>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("participantForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+        const data = await apiRequest("/participants", "POST", {
+            name: document.getElementById("name").value,
+            age: getIntValue("age"),
+            gender: document.getElementById("gender").value,
+            category: document.getElementById("category").value,
+            special_need_type: document.getElementById("special_need_type").value || null,
+            medical_history: document.getElementById("medical_history").value || null
+        });
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+
+document.getElementById("fetchAll").addEventListener("click", async () => {
+    try {
+        const data = await apiRequest("/participants");
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>

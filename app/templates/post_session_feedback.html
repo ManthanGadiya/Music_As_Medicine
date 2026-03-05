@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post-Session Feedback</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Post-Session Feedback</h1>
+    <div class="nav"><a href="./therapy_session.html">Therapy Session</a></div>
+    <div class="panel">
+        <form id="feedbackForm">
+            <input id="session_id" type="number" placeholder="Session ID" required />
+            <input id="mood_level" type="number" min="1" max="10" placeholder="Mood level" required />
+            <input id="behavior_change" placeholder="Behavior change" />
+            <input id="attention_change" placeholder="Attention change" />
+            <input id="social_response" placeholder="Social response" />
+            <textarea id="comments" placeholder="Comments"></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const sessionId = getIntValue("session_id");
+    try {
+        const data = await apiRequest(`/sessions/${sessionId}/feedback`, "POST", {
+            mood_level: getIntValue("mood_level"),
+            behavior_change: document.getElementById("behavior_change").value || null,
+            attention_change: document.getElementById("attention_change").value || null,
+            social_response: document.getElementById("social_response").value || null,
+            comments: document.getElementById("comments").value || null
+        });
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>

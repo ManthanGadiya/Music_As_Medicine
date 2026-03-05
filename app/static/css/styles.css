@@ -1,0 +1,110 @@
+:root {
+    --bg: #f5f7fb;
+    --panel: #ffffff;
+    --text: #1f2a44;
+    --muted: #4f5d75;
+    --primary: #1d6fdc;
+    --primary-2: #1558ad;
+    --line: #dbe3ef;
+    --success: #0f9d58;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at top right, #e8f2ff, var(--bg) 50%);
+}
+
+.container {
+    width: min(100%, 960px);
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+h1, h2 {
+    margin: 0 0 12px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 20px;
+}
+
+.nav a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input,
+select,
+textarea,
+button {
+    width: 100%;
+    font: inherit;
+    border-radius: 8px;
+}
+
+input,
+select,
+textarea {
+    border: 1px solid var(--line);
+    padding: 10px;
+    background: #fff;
+}
+
+button {
+    border: 0;
+    padding: 10px 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--primary-2);
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 0;
+}
+
+.ok {
+    color: var(--success);
+    font-weight: 600;
+}

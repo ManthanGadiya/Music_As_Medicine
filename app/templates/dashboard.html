@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Dashboard</h1>
+    <div class="nav">
+        <a href="./participants.html">Participants</a>
+        <a href="./therapy_session.html">Therapy Session</a>
+        <a href="./music_library.html">Music Library</a>
+        <a href="./progress_report.html">Progress Report</a>
+    </div>
+    <div class="panel">
+        <p>Use this page to navigate the therapy workflow.</p>
+        <button id="loadParticipants">Load Participants</button>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("loadParticipants").addEventListener("click", async () => {
+    try {
+        const data = await apiRequest("/participants");
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>

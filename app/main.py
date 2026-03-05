@@ -1,0 +1,36 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
+from app.config import API_PREFIX
+from app.data.seed_data import seed_therapist
+from app.database import initialize_database
+from app.routes.auth_routes import router as auth_router
+from app.routes.music_routes import router as music_router
+from app.routes.participant_routes import router as participant_router
+from app.routes.session_routes import router as session_router
+
+
+app = FastAPI(title="Music Therapy System API", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+
+@app.on_event("startup")
+def startup_event() -> None:
+    initialize_database()
+    seed_therapist()
+
+
+app.include_router(auth_router, prefix=API_PREFIX)
+app.include_router(participant_router, prefix=API_PREFIX)
+app.include_router(music_router, prefix=API_PREFIX)
+app.include_router(session_router, prefix=API_PREFIX)

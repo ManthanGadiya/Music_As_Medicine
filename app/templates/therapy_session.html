@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Therapy Session</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Therapy Session</h1>
+    <div class="nav">
+        <a href="./pre_session_assessment.html">Pre-Session Assessment</a>
+        <a href="./post_session_feedback.html">Post-Session Feedback</a>
+    </div>
+    <div class="panel">
+        <form id="sessionForm">
+            <input id="participant_id" type="number" placeholder="Participant ID" required />
+            <input id="therapist_id" type="number" placeholder="Therapist ID" required />
+            <input id="music_id" type="number" placeholder="Music ID" required />
+            <input id="session_date" type="date" required />
+            <input id="start_time" type="time" />
+            <input id="duration_min" type="number" placeholder="Duration (min)" required />
+            <textarea id="session_notes" placeholder="Session notes"></textarea>
+            <button type="submit">Start Session</button>
+        </form>
+        <form id="sessionFetchForm">
+            <input id="session_id" type="number" placeholder="Session ID" required />
+            <button type="submit">Get Session Details</button>
+        </form>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("sessionForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+        const data = await apiRequest("/sessions", "POST", {
+            participant_id: getIntValue("participant_id"),
+            therapist_id: getIntValue("therapist_id"),
+            music_id: getIntValue("music_id"),
+            session_date: document.getElementById("session_date").value,
+            start_time: document.getElementById("start_time").value || null,
+            duration_min: getIntValue("duration_min"),
+            session_notes: document.getElementById("session_notes").value || null
+        });
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+
+document.getElementById("sessionFetchForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+        const data = await apiRequest(`/sessions/${getIntValue("session_id")}`);
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>

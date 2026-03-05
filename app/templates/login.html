@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <div class="nav"><a href="./index.html">Home</a></div>
+    <div class="panel">
+        <form id="loginForm">
+            <label for="email">Email</label>
+            <input id="email" value="therapist@mail.com" required />
+            <label for="password">Password</label>
+            <input id="password" type="password" value="password123" required />
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div class="panel"><pre id="result"></pre></div>
+</div>
+<script src="../static/js/app.js"></script>
+<script>
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+        const data = await apiRequest("/auth/login", "POST", {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        });
+        localStorage.setItem("auth", JSON.stringify(data.data || data));
+        showJson("result", data);
+    } catch (err) {
+        showJson("result", { error: err.message });
+    }
+});
+</script>
+</body>
+</html>
