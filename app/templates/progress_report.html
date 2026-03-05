@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Report | Music Therapy System</title>
+    <title>Health Analytics | Music Therapy System</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">Music Therapy System</div>
@@ -14,33 +16,50 @@
             <a href="/dashboard">Dashboard</a>
             <a href="/participants">Participants</a>
             <a href="/music-library">Music Library</a>
-            <a href="/therapy-session">Start Session</a>
-            <a class="active" href="/progress-report">Reports</a>
+            <a href="/therapy-session">Therapy Session</a>
+            <a class="active" href="/progress-report">Health Analytics</a>
+            <a href="/hospital-network">Hospital Network</a>
         </nav>
     </aside>
     <main class="content">
         <div class="topbar">
-            <h1>Progress Report</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
+            <h1>Health Analytics</h1>
+            <div class="actions">
+                <button id="themeToggle" class="btn secondary" type="button">Light Mode</button>
+                <button id="logoutBtn" class="btn outline" type="button">Logout</button>
+            </div>
         </div>
         <div id="reportMessage" class="msg"></div>
-        <section class="panel">
+
+        <section class="panel reveal">
             <form id="progressForm" class="actions">
                 <select id="participant_id"></select>
-                <button type="submit">Load Report</button>
+                <button type="submit">Load Health Insights</button>
             </form>
         </section>
-        <section class="card-grid">
+
+        <section class="card-grid reveal">
             <article class="card"><h3>Session Count</h3><div id="sessionCount" class="value">0</div></article>
-            <article class="card"><h3>Avg Mood Improvement</h3><div id="avgMoodImprovement" class="value">0.00</div></article>
+            <article class="card"><h3>Therapy Impact Score</h3><div id="avgMoodImprovement" class="value">0.00</div></article>
             <article class="card"><h3>Feedback Summary</h3><div id="feedbackSummary">No data</div></article>
         </section>
-        <section class="panel chart-wrap">
-            <h2>Mood Trend (Pre vs Post)</h2>
-            <canvas id="moodChart"></canvas>
+
+        <section class="split reveal">
+            <article class="panel chart-wrap">
+                <h2>Weekly Mood Pattern (Heat View)</h2>
+                <canvas id="moodChart"></canvas>
+            </article>
+            <article class="panel">
+                <h2>Therapy Impact</h2>
+                <div class="meter"><span id="impactBar"></span></div>
+                <p>Average score uplift after therapy sessions.</p>
+                <h2>Session History Timeline</h2>
+                <div id="timeline" class="timeline"></div>
+            </article>
         </section>
-        <section class="panel">
-            <h2>Session Comparison</h2>
+
+        <section class="panel reveal">
+            <h2>Session Comparison Table</h2>
             <div class="table-wrap">
                 <table>
                     <thead><tr><th>Session ID</th><th>Date</th><th>Pre Mood</th><th>Post Mood</th><th>Behavior Change</th></tr></thead>
@@ -50,12 +69,16 @@
         </section>
     </main>
 </div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
 <script type="module">
 import { bindLogout, requireAuth } from "/static/js/auth.js";
 import { initProgressReport } from "/static/js/reports.js";
+import { initUI } from "/static/js/ui.js";
 requireAuth();
 bindLogout();
 initProgressReport();
+initUI();
+setTimeout(()=>{ const bar=document.getElementById('impactBar'); if(bar) bar.style.width='72%';},300);
 </script>
 </body>
 </html>

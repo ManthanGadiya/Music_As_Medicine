@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">Music Therapy System</div>
@@ -14,36 +16,42 @@
             <a class="active" href="/dashboard">Dashboard</a>
             <a href="/participants">Participants</a>
             <a href="/music-library">Music Library</a>
-            <a href="/therapy-session">Start Session</a>
-            <a href="/progress-report">Reports</a>
+            <a href="/therapy-session">Therapy Session</a>
+            <a href="/progress-report">Health Analytics</a>
+            <a href="/hospital-network">Hospital Network</a>
         </nav>
     </aside>
     <main class="content">
         <div class="topbar">
-            <h1>Dashboard</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
-        </div>
-        <div id="dashboardMessage" class="msg"></div>
-        <section class="card-grid">
-            <article class="card">
-                <h3>Total Participants</h3>
-                <div id="totalParticipants" class="value">0</div>
-            </article>
-            <article class="card">
-                <h3>Recent Sessions</h3>
-                <div id="recentSessionCount" class="value">0</div>
-            </article>
-        </section>
-        <section class="panel">
-            <h2>Quick Actions</h2>
+            <h1>Hospital Dashboard</h1>
             <div class="actions">
-                <a class="btn" href="/participants">Participants</a>
-                <a class="btn" href="/music-library">Music Library</a>
-                <a class="btn" href="/therapy-session">Start Therapy Session</a>
-                <a class="btn" href="/progress-report">Reports</a>
+                <button id="themeToggle" class="btn secondary" type="button">Light Mode</button>
+                <button id="logoutBtn" class="btn outline" type="button">Logout</button>
             </div>
+        </div>
+
+        <section class="split reveal">
+            <article class="panel">
+                <h2>Patient Overview Panel</h2>
+                <p><strong>Patient Name:</strong> Aarav Sharma</p>
+                <p><strong>Age:</strong> 9</p>
+                <p><strong>Therapy Type:</strong> Guided Music Relaxation</p>
+                <p><strong>Current Mood Score:</strong> 7/10 <span class="mood-pill mood-calm">Calm</span></p>
+                <p><strong>Stress Level:</strong> 3/10 <span class="mood-pill mood-stable">Stable</span></p>
+            </article>
+            <article class="panel">
+                <h2>Live EEG Wave</h2>
+                <div class="eeg"><div class="eeg-line"></div></div>
+            </article>
         </section>
-        <section class="panel">
+
+        <div id="dashboardMessage" class="msg"></div>
+        <section class="card-grid reveal">
+            <article class="card"><h3>Total Participants</h3><div id="totalParticipants" class="value">0</div></article>
+            <article class="card"><h3>Recent Sessions</h3><div id="recentSessionCount" class="value">0</div></article>
+        </section>
+
+        <section class="panel reveal">
             <h2>Recent Therapy Sessions</h2>
             <div class="table-wrap">
                 <table>
@@ -54,12 +62,15 @@
         </section>
     </main>
 </div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
 <script type="module">
 import { bindLogout, requireAuth } from "/static/js/auth.js";
 import { initDashboard } from "/static/js/reports.js";
+import { initUI } from "/static/js/ui.js";
 requireAuth();
 bindLogout();
 initDashboard();
+initUI();
 </script>
 </body>
 </html>

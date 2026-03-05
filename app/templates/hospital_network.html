@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Network | Music Therapy System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">Music Therapy System</div>
+        <nav class="menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/participants">Participants</a>
+            <a href="/music-library">Music Library</a>
+            <a href="/therapy-session">Therapy Session</a>
+            <a href="/progress-report">Health Analytics</a>
+            <a class="active" href="/hospital-network">Hospital Network</a>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="topbar">
+            <h1>Hospital Network</h1>
+            <div class="actions">
+                <button id="themeToggle" class="btn secondary" type="button">Light Mode</button>
+                <button id="logoutBtn" class="btn outline" type="button">Logout</button>
+            </div>
+        </div>
+
+        <section class="panel reveal">
+            <div class="map-placeholder">Network Map Placeholder (Dark Clinical Theme)</div>
+        </section>
+
+        <section class="hospital-grid reveal">
+            <article class="panel hospital-card">
+                <h3>NeuroCare Hospital</h3><p>Distance: 2.3 km</p><p>Rating: 4.8</p><p>Specialization: Pediatric Music Therapy</p><button class="btn">Book Appointment</button>
+            </article>
+            <article class="panel hospital-card">
+                <h3>Harmony Mind Center</h3><p>Distance: 4.1 km</p><p>Rating: 4.6</p><p>Specialization: Anxiety & Stress Therapy</p><button class="btn">Book Appointment</button>
+            </article>
+            <article class="panel hospital-card">
+                <h3>WellSpring Clinic</h3><p>Distance: 5.8 km</p><p>Rating: 4.7</p><p>Specialization: Autism Music Intervention</p><button class="btn">Book Appointment</button>
+            </article>
+        </section>
+    </main>
+</div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
+<script type="module">
+import { bindLogout, requireAuth } from "/static/js/auth.js";
+import { initUI } from "/static/js/ui.js";
+requireAuth();
+bindLogout();
+initUI();
+</script>
+</body>
+</html>

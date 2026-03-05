@@ -1,5 +1,5 @@
 import { apiGet, apiPost } from "/static/js/api.js";
-import { $, clearMessage, showMessage } from "/static/js/ui.js";
+import { $, clearMessage, getQueryParam, showMessage } from "/static/js/ui.js";
 
 async function loadSelectors() {
     const [participantsRes, musicRes] = await Promise.all([apiGet("/participants"), apiGet("/music")]);
@@ -46,9 +46,11 @@ export async function initSessionPage() {
             const response = await apiPost("/sessions", payload);
             const sessionId = response.data?.session_id;
             localStorage.setItem("last_session_id", String(sessionId || ""));
+            localStorage.setItem("last_participant_id", String(payload.participant_id || ""));
             showMessage("sessionMessage", `Session started (ID: ${sessionId})`, "success");
-            event.target.reset();
-            await loadSelectors();
+            setTimeout(() => {
+                window.location.href = `/pre-assessment?session_id=${sessionId}&participant_id=${payload.participant_id}`;
+            }, 300);
         } catch (error) {
             showMessage("sessionMessage", error.message, "error");
         }
@@ -58,8 +60,12 @@ export async function initSessionPage() {
 export function initPreAssessmentPage() {
     const form = $("#preAssessmentForm");
     if (!form) return;
-    const lastSessionId = localStorage.getItem("last_session_id");
+    const querySessionId = getQueryParam("session_id");
+    const queryParticipantId = getQueryParam("participant_id");
+    const lastSessionId = querySessionId || localStorage.getItem("last_session_id");
+    const lastParticipantId = queryParticipantId || localStorage.getItem("last_participant_id");
     if (lastSessionId) $("#session_id").value = lastSessionId;
+    if (lastParticipantId) localStorage.setItem("last_participant_id", String(lastParticipantId));
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -74,6 +80,10 @@ export function initPreAssessmentPage() {
             };
             await apiPost(`/sessions/${sessionId}/pre-assessment`, payload);
             showMessage("preMessage", "Pre-assessment saved", "success");
+            const participantId = localStorage.getItem("last_participant_id") || "";
+            setTimeout(() => {
+                window.location.href = `/post-feedback?session_id=${sessionId}&participant_id=${participantId}`;
+            }, 300);
         } catch (error) {
             showMessage("preMessage", error.message, "error");
         }
@@ -83,8 +93,12 @@ export function initPreAssessmentPage() {
 export function initPostFeedbackPage() {
     const form = $("#postFeedbackForm");
     if (!form) return;
-    const lastSessionId = localStorage.getItem("last_session_id");
+    const querySessionId = getQueryParam("session_id");
+    const queryParticipantId = getQueryParam("participant_id");
+    const lastSessionId = querySessionId || localStorage.getItem("last_session_id");
+    const lastParticipantId = queryParticipantId || localStorage.getItem("last_participant_id");
     if (lastSessionId) $("#session_id").value = lastSessionId;
+    if (lastParticipantId) localStorage.setItem("last_participant_id", String(lastParticipantId));
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -100,6 +114,10 @@ export function initPostFeedbackPage() {
             };
             await apiPost(`/sessions/${sessionId}/feedback`, payload);
             showMessage("postMessage", "Post-session feedback saved", "success");
+            const participantId = localStorage.getItem("last_participant_id") || "";
+            setTimeout(() => {
+                window.location.href = `/progress-report?participant_id=${participantId}`;
+            }, 300);
         } catch (error) {
             showMessage("postMessage", error.message, "error");
         }

@@ -7,24 +7,29 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
 <main class="auth-shell">
-    <section class="hero-card">
-        <div class="hero-grid">
-            <div>
-                <h1>Music Therapy System</h1>
-                <p>A healthcare-focused platform to support therapists in planning sessions, tracking pre/post assessments, and reviewing participant progress.</p>
-                <p>Music therapy helps regulate mood, improve focus, and encourage social response through structured therapeutic sessions.</p>
-                <div class="actions">
-                    <a class="btn" href="/login">Login</a>
-                    <a class="btn secondary" href="/signup">Sign Up</a>
-                </div>
-            </div>
-            <div class="panel">
-                <h2>System Workflow</h2>
-                <p>Login -> Dashboard -> Participants -> Therapy Session -> Pre Assessment -> Post Feedback -> Progress Reports</p>
-            </div>
+    <section class="hero-card reveal">
+        <h1 class="hero-title">Healing Minds Through Intelligent Music</h1>
+        <p class="hero-sub">AI-powered music therapy solutions for hospitals, patients, and mental wellness centers.</p>
+        <div class="actions">
+            <a class="btn cta-breathe" href="/therapy-session">Start Therapy Session</a>
+            <a class="btn outline" href="/progress-report">View Health Insights</a>
+            <button id="themeToggle" class="btn secondary" type="button">Light Mode</button>
         </div>
+
+        <section class="feature-cards">
+            <article class="feature-card reveal"><h3>?? Personalized Therapy</h3><p>Adaptive music prescriptions based on patient response patterns.</p></article>
+            <article class="feature-card reveal"><h3>?? Mental Health Monitoring</h3><p>Pre and post session indicators with structured clinical visibility.</p></article>
+            <article class="feature-card reveal"><h3>?? AI Mood Analysis</h3><p>Trend-based decision support for progressive therapy planning.</p></article>
+        </section>
     </section>
 </main>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
+<script type="module">
+import { initUI } from "/static/js/ui.js";
+initUI();
+</script>
 </body>
 </html>

@@ -1,63 +1,7 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participant Profile | Music Therapy System</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-<div class="app-shell">
-    <aside class="sidebar">
-        <div class="brand">Music Therapy System</div>
-        <nav class="menu">
-            <a href="/dashboard">Dashboard</a>
-            <a class="active" href="/participants">Participants</a>
-            <a href="/music-library">Music Library</a>
-            <a href="/therapy-session">Start Session</a>
-            <a href="/progress-report">Reports</a>
-        </nav>
-    </aside>
-    <main class="content">
-        <div class="topbar">
-            <h1>Participant Profile</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
-        </div>
-        <div id="profileMessage" class="msg"></div>
-        <section class="panel">
-            <h2>Load Profile</h2>
-            <div class="actions">
-                <input id="participantIdInput" type="number" placeholder="Participant ID">
-                <button id="loadProfileBtn">Load</button>
-            </div>
-        </section>
-        <section class="split">
-            <article class="panel">
-                <h2>Participant Details</h2>
-                <div id="profileDetails"></div>
-            </article>
-            <article class="panel">
-                <h2>Progress Summary</h2>
-                <p id="progressSummary">No data loaded</p>
-            </article>
-        </section>
-        <section class="panel">
-            <h2>Session History</h2>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Session ID</th><th>Date</th><th>Duration</th><th>Notes</th></tr></thead>
-                    <tbody id="sessionsBody"></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-</div>
-<script type="module">
-import { bindLogout, requireAuth } from "/static/js/auth.js";
-import { initParticipantProfilePage } from "/static/js/participants.js";
-requireAuth();
-bindLogout();
-initParticipantProfilePage();
-</script>
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Participant Profile | Music Therapy System</title><link rel="stylesheet" href="/static/css/styles.css"></head><body>
+<canvas id="particles" class="particles"></canvas><div class="loading-overlay"><div class="pulse-logo"></div></div>
+<div class="app-shell"><aside class="sidebar"><div class="brand">Music Therapy System</div><nav class="menu"><a href="/dashboard">Dashboard</a><a class="active" href="/participants">Participants</a><a href="/music-library">Music Library</a><a href="/therapy-session">Therapy Session</a><a href="/progress-report">Health Analytics</a><a href="/hospital-network">Hospital Network</a></nav></aside><main class="content"><div class="topbar"><h1>Participant Profile</h1><div class="actions"><button id="themeToggle" class="btn secondary" type="button">Light Mode</button><button id="logoutBtn" class="btn outline" type="button">Logout</button></div></div><div id="profileMessage" class="msg"></div><section class="panel reveal"><h2>Load Profile</h2><div class="actions"><input id="participantIdInput" type="number" placeholder="Participant ID"><button id="loadProfileBtn" type="button">Load</button></div></section><section class="split reveal"><article class="panel"><h2>Details</h2><div id="profileDetails"></div></article><article class="panel"><h2>Progress Summary</h2><p id="progressSummary">No data loaded</p></article></section><section class="panel reveal"><h2>Session History</h2><div class="table-wrap"><table><thead><tr><th>Session ID</th><th>Date</th><th>Duration</th><th>Notes</th></tr></thead><tbody id="sessionsBody"></tbody></table></div></section></main></div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
+<script type="module">import { bindLogout, requireAuth } from "/static/js/auth.js"; import { initParticipantProfilePage } from "/static/js/participants.js"; import { initUI } from "/static/js/ui.js"; requireAuth(); bindLogout(); initParticipantProfilePage(); initUI();</script>
+</body></html>

@@ -7,18 +7,17 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
 <main class="auth-shell">
-    <section class="auth-card">
+    <section class="auth-card reveal">
         <h1>Create Account</h1>
-        <p>Sign up using therapist credentials.</p>
+        <p class="hero-sub">Clinical staff onboarding for therapy dashboard.</p>
         <form id="signupForm">
-            <label for="email">Email</label>
-            <input id="email" type="email" required>
-            <label for="password">Password</label>
-            <input id="password" type="password" required>
-            <label for="confirm_password">Confirm Password</label>
-            <input id="confirm_password" type="password" required>
-            <button type="submit">Sign Up</button>
+            <label for="email">Email</label><input id="email" type="email" required>
+            <label for="password">Password</label><input id="password" type="password" required>
+            <label for="confirm_password">Confirm Password</label><input id="confirm_password" type="password" required>
+            <button class="cta-breathe" type="submit">Sign Up</button>
         </form>
         <div id="formMessage" class="msg"></div>
         <p>Already have an account? <a href="/login">Login</a></p>
@@ -26,8 +25,10 @@
 </main>
 <script type="module">
 import { bindSignupForm, redirectIfAuthenticated } from "/static/js/auth.js";
+import { initUI } from "/static/js/ui.js";
 redirectIfAuthenticated();
 bindSignupForm();
+initUI();
 </script>
 </body>
 </html>

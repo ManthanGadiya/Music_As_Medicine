@@ -1,65 +1,7 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Library | Music Therapy System</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-<div class="app-shell">
-    <aside class="sidebar">
-        <div class="brand">Music Therapy System</div>
-        <nav class="menu">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/participants">Participants</a>
-            <a class="active" href="/music-library">Music Library</a>
-            <a href="/therapy-session">Start Session</a>
-            <a href="/progress-report">Reports</a>
-        </nav>
-    </aside>
-    <main class="content">
-        <div class="topbar">
-            <h1>Music Library</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
-        </div>
-        <div id="musicMessage" class="msg"></div>
-        <section class="split">
-            <article class="panel">
-                <h2>Add Track</h2>
-                <form id="musicForm">
-                    <label>Title</label><input id="title" required>
-                    <label>Genre</label><input id="genre" required>
-                    <label>Instrument</label><input id="instrument" required>
-                    <label>Tempo</label><input id="tempo" type="number" step="0.1" required>
-                    <label>Frequency Range</label><input id="frequency_range" required>
-                    <label>Duration (sec)</label><input id="duration_sec" type="number" required>
-                    <label>File Path</label><input id="file_path" required>
-                    <button type="submit">Add Music</button>
-                </form>
-            </article>
-            <article class="panel">
-                <h2>Library Notes</h2>
-                <p>Use calm, low-frequency tracks for sensory regulation and attention support.</p>
-            </article>
-        </section>
-        <section class="panel">
-            <h2>Available Tracks</h2>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Title</th><th>Genre</th><th>Instrument</th><th>Tempo</th><th>Duration</th></tr></thead>
-                    <tbody id="musicBody"></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-</div>
-<script type="module">
-import { bindLogout, requireAuth } from "/static/js/auth.js";
-import { initMusicPage } from "/static/js/music.js";
-requireAuth();
-bindLogout();
-initMusicPage();
-</script>
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Music Library | Music Therapy System</title><link rel="stylesheet" href="/static/css/styles.css"></head><body>
+<canvas id="particles" class="particles"></canvas><div class="loading-overlay"><div class="pulse-logo"></div></div>
+<div class="app-shell"><aside class="sidebar"><div class="brand">Music Therapy System</div><nav class="menu"><a href="/dashboard">Dashboard</a><a href="/participants">Participants</a><a class="active" href="/music-library">Music Library</a><a href="/therapy-session">Therapy Session</a><a href="/progress-report">Health Analytics</a><a href="/hospital-network">Hospital Network</a></nav></aside><main class="content"><div class="topbar"><h1>Music Library</h1><div class="actions"><button id="themeToggle" class="btn secondary" type="button">Light Mode</button><button id="logoutBtn" class="btn outline" type="button">Logout</button></div></div><div id="musicMessage" class="msg"></div><section class="split reveal"><article class="panel"><h2>Add Track</h2><form id="musicForm"><label>Title</label><input id="title" required><label>Genre</label><input id="genre" required><label>Instrument</label><input id="instrument" required><label>Tempo</label><input id="tempo" type="number" step="0.1" required><label>Frequency Range</label><input id="frequency_range" required><label>Duration (sec)</label><input id="duration_sec" type="number" required><label>File Path</label><input id="file_path" required><button type="submit">Add Music</button></form></article><article class="panel"><h2>Clinical Notes</h2><p>Use low tempo and low frequency tracks for calming and sensory regulation.</p></article></section><section class="panel reveal"><h2>Music Tracks</h2><div class="table-wrap"><table><thead><tr><th>Title</th><th>Genre</th><th>Instrument</th><th>Tempo</th><th>Duration</th></tr></thead><tbody id="musicBody"></tbody></table></div></section></main></div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
+<script type="module">import { bindLogout, requireAuth } from "/static/js/auth.js"; import { initMusicPage } from "/static/js/music.js"; import { initUI } from "/static/js/ui.js"; requireAuth(); bindLogout(); initMusicPage(); initUI();</script>
+</body></html>

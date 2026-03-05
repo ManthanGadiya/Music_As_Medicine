@@ -1,47 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pre Assessment | Music Therapy System</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre Assessment | Music Therapy System</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas><div class="loading-overlay"><div class="pulse-logo"></div></div>
 <div class="app-shell">
-    <aside class="sidebar">
-        <div class="brand">Music Therapy System</div>
-        <nav class="menu">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/participants">Participants</a>
-            <a href="/music-library">Music Library</a>
-            <a class="active" href="/pre-assessment">Pre Assessment</a>
-            <a href="/progress-report">Reports</a>
-        </nav>
-    </aside>
-    <main class="content">
-        <div class="topbar">
-            <h1>Pre-Session Assessment</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
-        </div>
-        <div id="preMessage" class="msg"></div>
-        <section class="panel">
-            <form id="preAssessmentForm">
-                <label>Session ID</label><input id="session_id" type="number" required>
-                <label>Mood Level (1-10)</label><input id="mood_level" type="number" min="1" max="10" required>
-                <label>Stress Level (1-10)</label><input id="stress_level" type="number" min="1" max="10" required>
-                <label>Attention Level (1-10)</label><input id="attention_level" type="number" min="1" max="10" required>
-                <label>Notes</label><textarea id="notes"></textarea>
-                <button type="submit">Save Assessment</button>
-            </form>
-        </section>
-    </main>
+  <aside class="sidebar"><div class="brand">Music Therapy System</div><nav class="menu"><a href="/dashboard">Dashboard</a><a href="/participants">Participants</a><a href="/music-library">Music Library</a><a class="active" href="/pre-assessment">Pre Assessment</a><a href="/progress-report">Health Analytics</a><a href="/hospital-network">Hospital Network</a></nav></aside>
+  <main class="content">
+    <div class="topbar"><h1>Pre-Session Assessment</h1><div class="actions"><button id="themeToggle" class="btn secondary" type="button">Light Mode</button><button id="logoutBtn" class="btn outline" type="button">Logout</button></div></div>
+    <div id="preMessage" class="msg"></div>
+    <section class="panel reveal"><form id="preAssessmentForm"><label>Session ID</label><input id="session_id" type="number" required><label>Mood Level (1-10)</label><input id="mood_level" type="number" min="1" max="10" required><label>Stress Level (1-10)</label><input id="stress_level" type="number" min="1" max="10" required><label>Attention Level (1-10)</label><input id="attention_level" type="number" min="1" max="10" required><label>Notes</label><textarea id="notes"></textarea><button class="cta-breathe" type="submit">Save & Continue</button></form></section>
+  </main>
 </div>
-<script type="module">
-import { bindLogout, requireAuth } from "/static/js/auth.js";
-import { initPreAssessmentPage } from "/static/js/sessions.js";
-requireAuth();
-bindLogout();
-initPreAssessmentPage();
-</script>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
+<script type="module">import { bindLogout, requireAuth } from "/static/js/auth.js"; import { initPreAssessmentPage } from "/static/js/sessions.js"; import { initUI } from "/static/js/ui.js"; requireAuth(); bindLogout(); initPreAssessmentPage(); initUI();</script>
 </body>
 </html>

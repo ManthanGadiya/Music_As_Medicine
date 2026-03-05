@@ -1,5 +1,5 @@
 import { apiGet } from "/static/js/api.js";
-import { $, clearMessage, safeText, showMessage } from "/static/js/ui.js";
+import { $, clearMessage, getQueryParam, safeText, showMessage } from "/static/js/ui.js";
 
 function drawMoodTrend(canvasId, progressData) {
     const canvas = document.getElementById(canvasId);
@@ -80,6 +80,56 @@ export async function initDashboard() {
 
 export async function initProgressReport() {
     if (!$("#progressForm")) return;
+
+    async function renderReport(participantId) {
+        const progress = (await apiGet(`/participants/${participantId}/progress`)).data || [];
+
+        const improvements = progress.map((p) => (p.post_mood_level ?? 0) - (p.pre_mood_level ?? 0));
+        const averageImprovement = improvements.length
+            ? (improvements.reduce((a, b) => a + b, 0) / improvements.length).toFixed(2)
+            : "0.00";
+
+        $("#sessionCount").textContent = String(progress.length);
+        $("#avgMoodImprovement").textContent = averageImprovement;
+        $("#feedbackSummary").textContent = progress.length
+            ? "Feedback data available for selected participant"
+            : "No feedback found";
+
+        $("#progressBody").innerHTML = progress
+            .map(
+                (row) => `
+                    <tr>
+                        <td>${safeText(row.session_id)}</td>
+                        <td>${safeText(row.session_date)}</td>
+                        <td>${safeText(row.pre_mood_level)}</td>
+                        <td>${safeText(row.post_mood_level)}</td>
+                        <td>${safeText(row.behavior_change)}</td>
+                    </tr>
+                `
+            )
+            .join("");
+
+        drawMoodTrend("moodChart", progress);
+
+        const timeline = $("#timeline");
+        if (timeline) {
+            timeline.innerHTML = progress
+                .map(
+                    (row) =>
+                        `<div class="timeline-item">Session ${safeText(row.session_id)} (${safeText(
+                            row.session_date
+                        )}) - ${safeText(row.behavior_change)}</div>`
+                )
+                .join("");
+        }
+
+        const impactBar = $("#impactBar");
+        if (impactBar) {
+            const width = Math.max(0, Math.min(100, Number(averageImprovement) * 12));
+            impactBar.style.width = `${width}%`;
+        }
+    }
+
     try {
         await loadParticipantOptions();
     } catch (error) {
@@ -91,36 +141,20 @@ export async function initProgressReport() {
         clearMessage("reportMessage");
         try {
             const participantId = Number($("#participant_id").value);
-            const progress = (await apiGet(`/participants/${participantId}/progress`)).data || [];
-
-            const improvements = progress.map((p) => (p.post_mood_level ?? 0) - (p.pre_mood_level ?? 0));
-            const averageImprovement = improvements.length
-                ? (improvements.reduce((a, b) => a + b, 0) / improvements.length).toFixed(2)
-                : "0.00";
-
-            $("#sessionCount").textContent = String(progress.length);
-            $("#avgMoodImprovement").textContent = averageImprovement;
-            $("#feedbackSummary").textContent = progress.length
-                ? "Feedback data available for selected participant"
-                : "No feedback found";
-
-            $("#progressBody").innerHTML = progress
-                .map(
-                    (row) => `
-                        <tr>
-                            <td>${safeText(row.session_id)}</td>
-                            <td>${safeText(row.session_date)}</td>
-                            <td>${safeText(row.pre_mood_level)}</td>
-                            <td>${safeText(row.post_mood_level)}</td>
-                            <td>${safeText(row.behavior_change)}</td>
-                        </tr>
-                    `
-                )
-                .join("");
-
-            drawMoodTrend("moodChart", progress);
+            localStorage.setItem("last_participant_id", String(participantId));
+            await renderReport(participantId);
         } catch (error) {
             showMessage("reportMessage", error.message, "error");
         }
     });
+
+    const redirectedParticipantId = getQueryParam("participant_id") || localStorage.getItem("last_participant_id");
+    if (redirectedParticipantId) {
+        $("#participant_id").value = String(redirectedParticipantId);
+        try {
+            await renderReport(Number(redirectedParticipantId));
+        } catch (error) {
+            showMessage("reportMessage", error.message, "error");
+        }
+    }
 }

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+<canvas id="particles" class="particles"></canvas>
+<div class="loading-overlay"><div class="pulse-logo"></div></div>
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">Music Therapy System</div>
@@ -14,47 +16,75 @@
             <a href="/dashboard">Dashboard</a>
             <a href="/participants">Participants</a>
             <a href="/music-library">Music Library</a>
-            <a class="active" href="/therapy-session">Start Session</a>
-            <a href="/progress-report">Reports</a>
+            <a class="active" href="/therapy-session">Therapy Session</a>
+            <a href="/progress-report">Health Analytics</a>
+            <a href="/hospital-network">Hospital Network</a>
         </nav>
     </aside>
     <main class="content">
         <div class="topbar">
-            <h1>Start Therapy Session</h1>
-            <button id="logoutBtn" class="btn secondary">Logout</button>
-        </div>
-        <div id="sessionMessage" class="msg"></div>
-        <section class="panel">
-            <form id="sessionForm">
-                <label>Participant</label>
-                <select id="participant_id"></select>
-                <label>Therapist ID</label>
-                <input id="therapist_id" type="number" value="1" required>
-                <label>Music Track</label>
-                <select id="music_id"></select>
-                <label>Session Date</label>
-                <input id="session_date" type="date" required>
-                <label>Duration (min)</label>
-                <input id="duration_min" type="number" required>
-                <label>Notes</label>
-                <textarea id="session_notes"></textarea>
-                <button type="submit">Start Session</button>
-            </form>
-        </section>
-        <section class="panel">
+            <h1>Therapy Session</h1>
             <div class="actions">
-                <a class="btn" href="/pre-assessment">Pre Assessment</a>
-                <a class="btn success" href="/post-feedback">Post Feedback</a>
+                <button id="themeToggle" class="btn secondary" type="button">Light Mode</button>
+                <button id="logoutBtn" class="btn outline" type="button">Logout</button>
             </div>
+        </div>
+
+        <div id="sessionMessage" class="msg"></div>
+
+        <section class="split reveal">
+            <article class="panel">
+                <h2>Music Player Panel</h2>
+                <form id="sessionForm">
+                    <label>Participant</label><select id="participant_id"></select>
+                    <label>Therapist ID</label><input id="therapist_id" type="number" value="1" required>
+                    <label>Song / Track</label><select id="music_id"></select>
+                    <label>Frequency Type</label>
+                    <select id="frequency_type"><option>Alpha</option><option>Beta</option><option>Delta</option></select>
+                    <label>Session Date</label><input id="session_date" type="date" required>
+                    <label>Session Duration (min)</label><input id="duration_min" type="number" required>
+                    <label>Volume Control</label><input type="range" min="0" max="100" value="60">
+                    <label>Notes</label><textarea id="session_notes"></textarea>
+                    <button type="submit" class="cta-breathe">Start Session</button>
+                </form>
+            </article>
+            <article class="panel">
+                <h2>Health Monitoring Panel</h2>
+                <p><strong>Heart Rate:</strong> <span id="hrValue">72</span> BPM</p>
+                <div class="meter"><span id="stressBar"></span></div>
+                <p>Stress Level</p>
+                <div class="chart-wrap"><canvas id="brainChart"></canvas></div>
+            </article>
         </section>
     </main>
 </div>
+<a class="btn fab" href="/therapy-session">Start Therapy</a>
 <script type="module">
 import { bindLogout, requireAuth } from "/static/js/auth.js";
 import { initSessionPage } from "/static/js/sessions.js";
+import { initUI } from "/static/js/ui.js";
 requireAuth();
 bindLogout();
 initSessionPage();
+initUI();
+const stressBar = document.getElementById('stressBar');
+setTimeout(() => { stressBar.style.width = '65%'; }, 250);
+setInterval(() => {
+  const hr = document.getElementById('hrValue');
+  hr.textContent = String(68 + Math.floor(Math.random()*12));
+}, 1200);
+const canvas = document.getElementById('brainChart');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.clientWidth * (window.devicePixelRatio || 1);
+canvas.height = 240 * (window.devicePixelRatio || 1);
+ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+ctx.strokeStyle = '#00f5d4'; ctx.lineWidth = 2;
+ctx.beginPath();
+for (let x = 0; x < canvas.clientWidth; x++) {
+  const y = 120 + Math.sin(x/22) * 24 + Math.sin(x/8) * 6;
+  if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+}
+ctx.stroke();
 </script>
 </body>
 </html>

@@ -106,3 +106,8 @@ def post_feedback_alias_page() -> FileResponse:
 @app.get("/progress-report", include_in_schema=False)
 def progress_report_page() -> FileResponse:
     return FileResponse("app/templates/progress_report.html")
+
+
+@app.get("/hospital-network", include_in_schema=False)
+def hospital_network_page() -> FileResponse:
+    return FileResponse("app/templates/hospital_network.html")
